@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CSS/RestaurantList.css';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
@@ -6,14 +6,19 @@ const RestaurantMenu = () => {
     const [edit, setEdit] = useState(false);
     const [menus, setMenus] = useState([]);
     const [currentMenuId, setCurrentMenuId] = useState(null);
-    const [menuForm, setMenuForm] = useState({ id: '', name: '', category: '', veg: 'true', price: '', description: '' });
+    const [menuForm, setMenuForm] = useState({ id: '', name: '', price: '', description: '' });
     const [searchQuery, setSearchQuery] = useState('');
     const [name, setName] = useState('');
 
     const params = useParams();
     const navigate = useNavigate();
 
-    const fetchName = useCallback(async () => {
+    useEffect(() => {
+        fetchMenus();
+        fetchName();
+    });
+
+    const fetchName = async () => {
         try {
             const response = await fetch(`https://foodapp-0rh9.onrender.com/api/admin/restaurants/${params.id}`);
             const data = await response.json();
@@ -21,9 +26,9 @@ const RestaurantMenu = () => {
         } catch (err) {
             console.log(err.message);
         }
-    }, [params.id]);
+    }
 
-    const fetchMenus = useCallback(async () => {
+    const fetchMenus = async () => {
         try {
             const response = await fetch(`https://foodapp-0rh9.onrender.com/api/restaurants/${params.id}/menu`);
             const data = await response.json();
@@ -31,12 +36,7 @@ const RestaurantMenu = () => {
         } catch (error) {
             console.error('Error fetching menus:', error);
         }
-    }, [params.id]);
-
-    useEffect(() => {
-        fetchMenus();
-        fetchName();
-    }, [fetchMenus, fetchName]);
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -46,7 +46,7 @@ const RestaurantMenu = () => {
     const handleMenuSubmit = async (event) => {
         event.preventDefault();
 
-        const menuData = { name: menuForm.name, category: menuForm.category, veg: menuForm.veg, price: menuForm.price, description: menuForm.description };
+        const menuData = { name: menuForm.name, price: menuForm.price, description: menuForm.description };
 
         if (edit) {
             try {
@@ -89,7 +89,7 @@ const RestaurantMenu = () => {
 
     const editButton = (id) => {
         const menu = menus.find((menu) => menu.itemId === id);
-        setMenuForm({ id: menu.itemId, name: menu.name, category: menu.category, veg: menu.veg, price: menu.price, description: menu.description });
+        setMenuForm({ id: menu.itemId, name: menu.name, price: menu.price, description: menu.description });
 
         setEdit(true);
         setCurrentMenuId(id);
@@ -102,7 +102,7 @@ const RestaurantMenu = () => {
     const resetForm = () => {
         setEdit(false);
         setCurrentMenuId(null);
-        setMenuForm({ id: '', name: '', category: '', veg: 'true', price: '', description: '' });
+        setMenuForm({ id: '', name: '', price: '', description: '' });
     };
 
     const goBack = () => {
@@ -161,27 +161,6 @@ const RestaurantMenu = () => {
                         required
                     />
                     <input
-                        id="category"
-                        name="category"
-                        className="form-control"
-                        type="text"
-                        placeholder="Enter Item Category"
-                        value={menuForm.category}
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <select
-                        id="veg"
-                        name="veg"
-                        className="form-control"
-                        value={menuForm.veg}
-                        onChange={handleInputChange}
-                        required
-                    >
-                        <option value="true">Veg</option>
-                        <option value="false">Non-Veg</option>
-                    </select>
-                    <input
                         id="price"
                         name="price"
                         className="form-control"
@@ -226,8 +205,6 @@ const RestaurantMenu = () => {
                         <tr>
                             <th>Item Id</th>
                             <th>Name</th>
-                            <th>Category</th>
-                            <th>Type</th>
                             <th>Price</th>
                             <th>Description</th>
                             <th>Actions</th>
@@ -238,8 +215,6 @@ const RestaurantMenu = () => {
                             <tr key={menu.itemId}>
                                 <td>{menu.itemId}</td>
                                 <td>{menu.name}</td>
-                                <td>{menu.category}</td>
-                                <td>{menu.veg === 'true' ? 'Veg' : 'Non-Veg'}</td>
                                 <td>{menu.price}</td>
                                 <td>{menu.description}</td>
                                 <td>
