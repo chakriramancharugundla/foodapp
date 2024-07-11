@@ -236,9 +236,9 @@ const RestaurantMenu = () => {
                         {filteredMenus.map((menu) => (
                             <tr key={menu.itemId}>
                                 <td>{menu.itemId}</td>
+                                <td>{menu.name}</td>
                                 <td>{menu.category}</td>
                                 <td>{menu.veg}</td>
-                                <td>{menu.name}</td>
                                 <td>{menu.price}</td>
                                 <td>{menu.description}</td>
                                 <td>
