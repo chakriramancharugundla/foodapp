@@ -161,6 +161,26 @@ const RestaurantMenu = () => {
                         required
                     />
                     <input
+                        id="category"
+                        name="category"
+                        className="form-control"
+                        type="text"
+                        placeholder="Enter Item Category"
+                        value={menuForm.category}
+                        onChange={handleInputChange}
+                        required
+                    />
+                    <input
+                        id="veg"
+                        name="veg"
+                        className="form-control"
+                        type="text"
+                        placeholder="Enter Veg or Non-Veg"
+                        value={menuForm.veg}
+                        onChange={handleInputChange}
+                        required
+                    />
+                    <input
                         id="price"
                         name="price"
                         className="form-control"
