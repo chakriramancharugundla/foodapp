@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './CSS/RestaurantList.css';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
@@ -13,12 +13,7 @@ const RestaurantMenu = () => {
     const params = useParams();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        fetchMenus();
-        fetchName();
-    }, []); // Add an empty dependency array to prevent infinite loop
-
-    const fetchName = async () => {
+    const fetchName = useCallback(async () => {
         try {
             const response = await fetch(`https://foodapp-0rh9.onrender.com/api/admin/restaurants/${params.id}`);
             const data = await response.json();
@@ -26,9 +21,9 @@ const RestaurantMenu = () => {
         } catch (err) {
             console.log(err.message);
         }
-    }
+    }, [params.id]);
 
-    const fetchMenus = async () => {
+    const fetchMenus = useCallback(async () => {
         try {
             const response = await fetch(`https://foodapp-0rh9.onrender.com/api/restaurants/${params.id}/menu`);
             const data = await response.json();
@@ -36,7 +31,12 @@ const RestaurantMenu = () => {
         } catch (error) {
             console.error('Error fetching menus:', error);
         }
-    };
+    }, [params.id]);
+
+    useEffect(() => {
+        fetchMenus();
+        fetchName();
+    }, [fetchMenus, fetchName]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -239,7 +239,7 @@ const RestaurantMenu = () => {
                                 <td>{menu.itemId}</td>
                                 <td>{menu.name}</td>
                                 <td>{menu.category}</td>
-                                <td>{menu.veg ? 'Veg' : 'Non-Veg'}</td>
+                                <td>{menu.veg === 'true' ? 'Veg' : 'Non-Veg'}</td>
                                 <td>{menu.price}</td>
                                 <td>{menu.description}</td>
                                 <td>
