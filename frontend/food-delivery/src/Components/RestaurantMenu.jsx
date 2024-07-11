@@ -6,7 +6,7 @@ const RestaurantMenu = () => {
     const [edit, setEdit] = useState(false);
     const [menus, setMenus] = useState([]);
     const [currentMenuId, setCurrentMenuId] = useState(null);
-    const [menuForm, setMenuForm] = useState({ id: '', name: '', category: '', veg: '', price: '', description: '' });
+    const [menuForm, setMenuForm] = useState({ id: '', name: '', category: '', veg: 'true', price: '', description: '' });
     const [searchQuery, setSearchQuery] = useState('');
     const [name, setName] = useState('');
 
@@ -16,7 +16,7 @@ const RestaurantMenu = () => {
     useEffect(() => {
         fetchMenus();
         fetchName();
-    });
+    }, []); // Add an empty dependency array to prevent infinite loop
 
     const fetchName = async () => {
         try {
@@ -102,7 +102,7 @@ const RestaurantMenu = () => {
     const resetForm = () => {
         setEdit(false);
         setCurrentMenuId(null);
-        setMenuForm({ id: '', name: '', category: '', veg: '', price: '', description: '' });
+        setMenuForm({ id: '', name: '', category: '', veg: 'true', price: '', description: '' });
     };
 
     const goBack = () => {
@@ -170,16 +170,17 @@ const RestaurantMenu = () => {
                         onChange={handleInputChange}
                         required
                     />
-                    <input
+                    <select
                         id="veg"
                         name="veg"
                         className="form-control"
-                        type="text"
-                        placeholder="Enter Veg or Non-Veg"
                         value={menuForm.veg}
                         onChange={handleInputChange}
                         required
-                    />
+                    >
+                        <option value="true">Veg</option>
+                        <option value="false">Non-Veg</option>
+                    </select>
                     <input
                         id="price"
                         name="price"
@@ -238,7 +239,7 @@ const RestaurantMenu = () => {
                                 <td>{menu.itemId}</td>
                                 <td>{menu.name}</td>
                                 <td>{menu.category}</td>
-                                <td>{menu.veg}</td>
+                                <td>{menu.veg ? 'Veg' : 'Non-Veg'}</td>
                                 <td>{menu.price}</td>
                                 <td>{menu.description}</td>
                                 <td>
