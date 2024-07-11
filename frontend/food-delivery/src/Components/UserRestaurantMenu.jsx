@@ -127,6 +127,8 @@ function UserRestaurantMenu() {
                                 />
                                 <div className="card-body text-center">
                                     <h5 className="card-title">{menu.name}</h5>
+                                    <h5 className="card-title">{menu.category}</h5>
+                                    <h5 className="card-title">{menu.veg}</h5>
                                     <p className="card-text">&#8377; {menu.price}</p>
                                     <button className="btn btn-primary" onClick={() => addToCart(menu)}>Add to Cart</button>
                                 </div>
