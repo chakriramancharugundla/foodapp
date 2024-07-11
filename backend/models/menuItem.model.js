@@ -7,6 +7,8 @@ const menuItemSchema = mongoose.Schema({
         unique: true
     },
     name: String,
+    category: String,
+    veg: Boolean,
     price: Number,
     description: String,
     restaurantId: {
