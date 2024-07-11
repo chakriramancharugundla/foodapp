@@ -6,7 +6,7 @@ const RestaurantMenu = () => {
     const [edit, setEdit] = useState(false);
     const [menus, setMenus] = useState([]);
     const [currentMenuId, setCurrentMenuId] = useState(null);
-    const [menuForm, setMenuForm] = useState({ id: '', name: '', price: '', description: '' });
+    const [menuForm, setMenuForm] = useState({ id: '', name: '', category: '', veg: '', price: '', description: '' });
     const [searchQuery, setSearchQuery] = useState('');
     const [name, setName] = useState('');
 
@@ -102,7 +102,7 @@ const RestaurantMenu = () => {
     const resetForm = () => {
         setEdit(false);
         setCurrentMenuId(null);
-        setMenuForm({ id: '', name: '', price: '', description: '' });
+        setMenuForm({ id: '', name: '', category: '', veg: '', price: '', description: '' });
     };
 
     const goBack = () => {
