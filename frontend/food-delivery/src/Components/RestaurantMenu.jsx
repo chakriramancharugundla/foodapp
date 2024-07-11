@@ -46,7 +46,7 @@ const RestaurantMenu = () => {
     const handleMenuSubmit = async (event) => {
         event.preventDefault();
 
-        const menuData = { name: menuForm.name, price: menuForm.price, description: menuForm.description };
+        const menuData = { name: menuForm.name, category: menuForm.category, veg: menuForm.veg, price: menuForm.price, description: menuForm.description };
 
         if (edit) {
             try {
@@ -89,7 +89,7 @@ const RestaurantMenu = () => {
 
     const editButton = (id) => {
         const menu = menus.find((menu) => menu.itemId === id);
-        setMenuForm({ id: menu.itemId, name: menu.name, price: menu.price, description: menu.description });
+        setMenuForm({ id: menu.itemId, name: menu.name, category: menu.category, veg: menu.veg, price: menu.price, description: menu.description });
 
         setEdit(true);
         setCurrentMenuId(id);
